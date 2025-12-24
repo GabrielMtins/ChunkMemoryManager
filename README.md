@@ -1,8 +1,9 @@
 # ChunkMemoryManager
 
 ChunkMemoryManager é uma biblioteca de c++ que cria um alocador customizado de
-memória baseado em **chunks** e oferece alternativas para **std::unique\_ptr**
-e **std::make\_unique**. A biblioteca está sob a licença GNU GPLv3.
+memória baseado em **chunks** e oferece alternativas para **std::unique\_ptr**,
+**std::make\_unique**, **std::shared\_ptr** e **std::make\_shared**. A
+biblioteca está sob a licença GNU GPLv3.
 
 # Funcionamento
 
@@ -29,12 +30,11 @@ Segue um exemplo de funcionamento em um arquivo:
 #include "ChunkMemoryManager.hpp"
 
 int main(void) {
-	cmm::start(1024, 1024);
-	printf("Hello World!\n");
+	cmm::ChunkMemoryManager memory_manager(1024, 1024);
 
-	cmm::unique_ptr<int> x;
-	
-	x = cmm::make_unique<int>(3);
+	cmm::unique_ptr<int> x = memory_manager.make_unique<int>(2);
+
+	(*x)++;
 
 	printf("%d\n", *x);
 
@@ -42,9 +42,9 @@ int main(void) {
 }
 ```
 
-A função `cmm::start` recebe dois parâmetros: o primeiro é o número de chunks
-que o usuário quer que a biblioteca aloque e o segundo é o tamanho em bytes de
-cada chunk. 
+O construtor de `cmm::ChunkMemoryManager` recebe dois parâmetros: o primeiro é
+o número de chunks que o usuário quer que a biblioteca aloque e o segundo é o
+tamanho em bytes de cada chunk. 
 
 # Quais são os usos
 
